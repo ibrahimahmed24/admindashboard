@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: admin_dashboard_db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: allahakbr
+      POSTGRES_DB: admin_dashboard
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    container_name: admin_dashboard_api
+    build: .
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    command: >
+      sh -c "npx prisma migrate deploy &&
+             node dist/main.js"
+
+volumes:
+  postgres_data:
