@@ -22,6 +22,9 @@ services:
       - "3000:3000"
     env_file:
       - .env
+    environment:
+      DATABASE_URL: postgresql://postgres:allahakbr@postgres:5432/admin_dashboard?schema=public
+
     depends_on:
       - postgres
     command: >
